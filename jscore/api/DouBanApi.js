@@ -4,17 +4,24 @@
 
 const HOST = 'https://api.douban.com';
 
-const DouBanApi = {
+export default DouBanApi = {
 
     getNewMovies() {
         this.doFetch(HOST + '/v2/movie/new_movies');
     },
 
-    async searchMovie(name: string) {
-        let result = await this.doFetch(HOST + `/v2/movie/search?q={${name}}`);
-            console.log(result.subjects);
+    async searchMovieById(id: string) {
+        let result = await this.doFetch(HOST + `/v2/movie/subject/${id}`);
         if (result.total) {
-            return result.subjects;
+            return result;
+        }
+        return null;
+    },
+
+    async searchMovie(name: string) {
+        let result = await this.doFetch(HOST + `/v2/movie/search?q={${name}}&count=10`);
+        if (result.total) {
+            return result;
         }
         return null;
     },
@@ -23,12 +30,10 @@ const DouBanApi = {
         try {
             let response = await fetch(url);
             let data = response.json();
-            console.log(data);
             return data;
         } catch (e) {
             console.log("Oops, error", e);
         }
     }
-}
 
-module.exports = DouBanApi;
+}

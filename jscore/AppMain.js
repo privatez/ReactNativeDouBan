@@ -7,11 +7,9 @@ import {StackNavigator} from 'react-navigation';
 import MovieMain from './movie/MovieMain'
 import MovieSearch from './movie/MovieSearch'
 
-const app = StackNavigator({
+export default app = StackNavigator({
     MovieMain: {screen: MovieMain},
     MovieSearch: {screen: MovieSearch},
 }, {
     headerMode: 'screen'
 });
-
-module.exports = app;

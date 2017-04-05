@@ -27,6 +27,7 @@ export default class SearchBar extends Component {
                                placeholder={'搜索'}
                                returnKeyType={'search'}
                                returnKeyLabel={'search'}
+                               selectionColor='red'
                                underlineColorAndroid="transparent"
                                onSubmitEditing={this.props.startSearch}/>
                 </View>
