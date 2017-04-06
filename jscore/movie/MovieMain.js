@@ -13,6 +13,7 @@ import {
 } from 'react-native'
 
 import {SearchBar} from 'react-native-elements'
+import {Actions} from 'react-native-router-flux'
 
 import Banner from './Banner';
 import SearchButton from '../component/SearchButton'
@@ -33,11 +34,7 @@ export default class MovieMain extends Component {
     render() {
         return (
             <View style={styles.container}>
-                <StatusBar hidden={false} barStyle={'light-content'} backgroundColor={'#f0f0f0'}/>
-                <SearchButton onClick={() => {
-                    const {navigate} = this.props.navigation;
-                    navigate('MovieSearch')
-                }}/>
+                <SearchButton onClick={Actions.movieSearch}/>
                 <Banner width={width} height={height / 3.5}/>
             </View>
         )

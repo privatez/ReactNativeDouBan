@@ -12,10 +12,7 @@ export default DouBanApi = {
 
     async searchMovieById(id: string) {
         let result = await this.doFetch(HOST + `/v2/movie/subject/${id}`);
-        if (result.total) {
-            return result;
-        }
-        return null;
+        return result;
     },
 
     async searchMovie(name: string) {

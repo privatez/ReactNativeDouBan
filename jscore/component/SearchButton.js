@@ -30,7 +30,11 @@ export default class SearchButton extends Component {
 }
 
 SearchButton.props = {
-    onClick: PropTypes.func,
+    onClick: () => any,
+}
+
+SearchButton.propTypes = {
+    onClick: React.PropTypes.func,
 }
 
 const searchHeight = height / 14;

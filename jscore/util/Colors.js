@@ -3,5 +3,7 @@
  */
 
 export default Colors = {
-    borderGrey: '#bfbfbf'
+    borderGrey: '#bfbfbf',
+
+    backgroundGrey: '#cdcdcd',
 }

@@ -8,24 +8,27 @@ import {
     Text,
     Image,
     FlatList,
-    StyleSheet,
     ToastAndroid,
+    TouchableOpacity,
+    Keyboard,
+    StyleSheet,
     Dimensions,
     PixelRatio,
 } from 'react-native'
 
+import {Actions} from 'react-native-router-flux'
+
 import SearchBar from '../component/SearchBar'
 
-import DouBanApi from '../api/DouBanApi'
 import Colors from '../util/Colors'
-import StringUtil from '../util/StringUtil'
-
+import TextUtil from '../util/TextUtil'
+import DouBanApi from '../api/DouBanApi'
 
 const {width, height} = Dimensions.get('window');
 
 const itemHeight = height / 5;
 
-const minPixel = 1 / PixelRatio.get();
+const minWidth = 1 / PixelRatio.get();
 
 export default class MovieSearch extends Component {
 
@@ -51,22 +54,33 @@ export default class MovieSearch extends Component {
     }
 
     renderRow({item}) {
-        let genres = StringUtil.getDisplayTextDefault(item.genres, null, 12);
-        let starring = StringUtil.getDisplayTextDefault(item.casts, 'name', 12);
-        let directors = StringUtil.getDisplayTextDefault(item.directors, 'name', 12);
+        const genres = TextUtil.getDisplayText(item.genres, null, 12);
+        const starring = TextUtil.getDisplayText(item.casts, 'name', 12);
+        const directors = TextUtil.getDisplayText(item.directors, 'name', 12);
+
         return (
-            <View style={styles.itemContainer}>
-                <Image style={styles.itemImage} source={{uri: item.images.large}}/>
-                <View style={styles.itemContent}>
-                    <Text>{`片名：${item.title}`}</Text>
-                    <Text>{`年份：${item.year}`}</Text>
-                    <Text>{`导演：${directors}`}</Text>
-                    <Text>{`主演：${starring}`}</Text>
-                    <Text>{`评分：${item.rating.average} / ${item.rating.max}`}</Text>
-                    <Text>{`分类：${genres}`}</Text>
+            <TouchableOpacity style={styles.container}
+                              activeOpacity={0.8}
+                              onPress={() => Actions.movieDetail({id: item.id, title: item.title})}>
+                <View style={styles.itemContainer}>
+                    <Image style={styles.itemImage} source={{uri: item.images.large}}/>
+                    <View style={styles.itemContent}>
+                        <Text>{`片名：${item.title}`}</Text>
+                        <Text>{`年份：${item.year}`}</Text>
+                        <Text>{`导演：${directors}`}</Text>
+                        <Text>{`主演：${starring}`}</Text>
+                        <Text>{`评分：${item.rating.average} / ${item.rating.max}`}</Text>
+                        <Text>{`分类：${genres}`}</Text>
+                    </View>
                 </View>
-            </View>
+            </TouchableOpacity>
+
         );
+    }
+
+    back() {
+        Keyboard.dismiss();
+        Actions.pop();
     }
 
     render() {
@@ -76,21 +90,27 @@ export default class MovieSearch extends Component {
             </Text>
         ) : null;
 
+        const hasResult = this.state.searchResults && this.state.searchResults.length;
+
+        let searchResult = hasResult ? (
+            <FlatList style={styles.list}
+                      data={this.state.searchResults}
+                      renderItem={this.renderRow.bind(this)}
+                      getItemLayout={(data, index) => (
+                          // 120 是被渲染 item 的高度 ITEM_HEIGHT。
+                          {length: itemHeight, offset: itemHeight * index, index}
+                      )}
+                      keyExtractor={(item, index: number) => `${item}${index}`}
+            />
+        ) : null;
+
         return (
             <View style={styles.container}>
                 <SearchBar startSearch={this.startSearch.bind(this)}
-                           cancel={() => ToastAndroid.show('cancle', ToastAndroid.SHORT)}/>
-                <View style={{width, height: minPixel, backgroundColor: Colors.borderGrey}}/>
+                           cancel={this.back}/>
+                <View style={{width, height: minWidth, backgroundColor: Colors.borderGrey}}/>
                 {history}
-                <FlatList style={styles.list}
-                          data={this.state.searchResults}
-                          renderItem={this.renderRow.bind(this)}
-                          getItemLayout={(data, index) => (
-                              // 120 是被渲染 item 的高度 ITEM_HEIGHT。
-                              {length: itemHeight, offset: itemHeight * index, index}
-                          )}
-                          keyExtractor={(item, index: number) => `${item}${index}`}
-                />
+                {searchResult}
             </View>
         )
 
@@ -109,6 +129,7 @@ const styles = StyleSheet.create({
     },
     list: {
         flex: 1,
+        backgroundColor: Colors.backgroundGrey,
     },
     itemContainer: {
         flexDirection: 'row',
@@ -125,7 +146,9 @@ const styles = StyleSheet.create({
     itemImage: {
         width: (itemHeight - 16) * 0.75,
         height: itemHeight - 16,
-        borderRadius: 5
+        borderRadius: 5,
+        borderWidth: minWidth,
+        borderColor: Colors.borderGrey,
     },
     itemContent: {
         flex: 1,

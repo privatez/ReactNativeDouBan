@@ -2,18 +2,12 @@
  * Created by private on 2017/3/31.
  */
 
-/*import {StackNavigator} from 'react-navigation';
- export default AppMain = StackNavigator({
- MovieMain: {screen: MovieMain},
- MovieSearch: {screen: MovieSearch},
- }, {
- headerMode: 'screen'
- });*/
-
 import React, {Component} from 'react'
 import {
     View,
-    StyleSheet
+    StatusBar,
+    StyleSheet,
+    Platform,
 } from 'react-native'
 
 import {
@@ -28,6 +22,7 @@ import {
 
 import MovieMain from './movie/MovieMain'
 import MovieSearch from './movie/MovieSearch'
+import MovieDetail from './movie/MovieDetail'
 
 const reducerCreate = params => {
     const defaultReducer = new Reducer(params);
@@ -47,6 +42,7 @@ const getSceneStyle = (/* NavigationSceneRendererProps */ props, computedProps) 
         shadowOpacity: null,
         shadowRadius: null,
     };
+
     if (computedProps.isActive) {
         style.marginTop = computedProps.hideNavBar ? 0 : 64;
         style.marginBottom = computedProps.hideTabBar ? 0 : 50;
@@ -61,8 +57,9 @@ export default class AppMain extends Component {
             <Router createReducer={reducerCreate} getSceneStyle={getSceneStyle}>
                 <Scene key="modal" component={Modal}>
                     <Scene key="root" hideNavBar hideTabBar>
-                        <Scene key="movieMain" component={MovieMain}/>
+                        <Scene key="movieMain" component={MovieMain} initial/>
                         <Scene key="movieSearch" component={MovieSearch}/>
+                        <Scene key="movieDetail" component={MovieDetail} hideNavBar={false}/>
                     </Scene>
                 </Scene>
             </Router>

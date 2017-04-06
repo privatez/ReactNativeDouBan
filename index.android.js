@@ -4,7 +4,7 @@
  * @flow
  */
 
-import AppMain from './jscore/AppMain'
+import AppMain from './jscore/NewAppMain'
 
 import {AppRegistry} from 'react-native'
 

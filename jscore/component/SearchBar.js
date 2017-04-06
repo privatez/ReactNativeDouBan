@@ -38,8 +38,13 @@ export default class SearchBar extends Component {
 }
 
 SearchBar.props = {
-    startSearch: PropTypes.func,
+    cancel: () => any,
+    startSearch: () => any,
+}
+
+SearchBar.propTypes = {
     cancel: PropTypes.func,
+    startSearch: PropTypes.func,
 }
 
 const searchHeight = height / 14;
