@@ -8,6 +8,7 @@ import {
     StatusBar,
     StyleSheet,
     Platform,
+    PixelRatio,
 } from 'react-native'
 
 import {
@@ -46,6 +47,9 @@ const getSceneStyle = (/* NavigationSceneRendererProps */ props, computedProps) 
     if (computedProps.isActive) {
         style.marginTop = computedProps.hideNavBar ? 0 : 64;
         style.marginBottom = computedProps.hideTabBar ? 0 : 50;
+    }
+    if (Platform.OS === 'ios') {
+        style.marginTop = 10;
     }
     return style;
 };

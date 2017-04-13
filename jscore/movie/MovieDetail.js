@@ -45,7 +45,7 @@ export default class MovieDetail extends Component {
             const genres = TextUtil.getDisplayText(detail.genres, null, 12);
             const starring = TextUtil.getDisplayText(detail.casts, 'name', 12);
             const directors = TextUtil.getDisplayText(detail.directors, 'name', 12);
-            
+
             content = (
                 <View style={styles.itemContainer}>
                     <Image style={styles.itemImage} source={{uri: detail.images.large}}/>

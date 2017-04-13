@@ -21,7 +21,7 @@ export default class SearchBar extends Component {
         return (
             <View style={styles.container}>
                 <View style={styles.inputWrapper}>
-                    <Image style={styles.searchIcon} source={require('../img/search.png')}/>
+                    <Image style={styles.searchIcon} source={require('../../img/search.png')}/>
                     <TextInput style={styles.input}
                                autoFocus={true}
                                placeholder={'搜索'}

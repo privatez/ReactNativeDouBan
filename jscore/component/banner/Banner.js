@@ -15,7 +15,7 @@ import Swiper from 'react-native-swiper'
 
 import BannerItem from './BannerItem'
 
-import DouBanApi from '../api/DouBanApi'
+import DouBanApi from '../../api/DouBanApi'
 
 
 export default class Banner extends Component {

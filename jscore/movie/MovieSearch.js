@@ -11,14 +11,19 @@ import {
     ToastAndroid,
     TouchableOpacity,
     Keyboard,
+    Platform,
     StyleSheet,
     Dimensions,
     PixelRatio,
+    BackAndroid,
 } from 'react-native'
 
 import {Actions} from 'react-native-router-flux'
 
-import SearchBar from '../component/SearchBar'
+import SearchBar from '../component/search/SearchBar'
+import AlertDialog from "../component/dialog/AlertDialog";
+import MovieDetailDialog from "../component/dialog/MovieDetailDialog";
+import {renderBorder} from '../component/ComponentRender'
 
 import Colors from '../util/Colors'
 import TextUtil from '../util/TextUtil'
@@ -36,6 +41,8 @@ export default class MovieSearch extends Component {
         super(props);
         this.state = {
             searchResults: [],
+            isDetailWillShow: false,
+            willShowDetailId: '',
         };
     }
 
@@ -61,7 +68,10 @@ export default class MovieSearch extends Component {
         return (
             <TouchableOpacity style={styles.container}
                               activeOpacity={0.8}
-                              onPress={() => Actions.movieDetail({id: item.id, title: item.title})}>
+                              onPress={() => this.setState({
+                                  willShowDetailId: item.id,
+                                  isDetailWillShow: true,
+                              })}>
                 <View style={styles.itemContainer}>
                     <Image style={styles.itemImage} source={{uri: item.images.large}}/>
                     <View style={styles.itemContent}>
@@ -84,7 +94,7 @@ export default class MovieSearch extends Component {
     }
 
     render() {
-        let history = this.isHasHistory() ? (
+        const history = this.isHasHistory() ? (
             <Text style={{height: 120}}>
                 历史
             </Text>
@@ -92,25 +102,34 @@ export default class MovieSearch extends Component {
 
         const hasResult = this.state.searchResults && this.state.searchResults.length;
 
-        let searchResult = hasResult ? (
+        const searchResult = hasResult ? (
             <FlatList style={styles.list}
                       data={this.state.searchResults}
                       renderItem={this.renderRow.bind(this)}
                       getItemLayout={(data, index) => (
-                          // 120 是被渲染 item 的高度 ITEM_HEIGHT。
+                          // itemHeight 是被渲染 item 的高度 ITEM_HEIGHT。
                           {length: itemHeight, offset: itemHeight * index, index}
                       )}
                       keyExtractor={(item, index: number) => `${item}${index}`}
             />
         ) : null;
 
+        const detailDialog = this.state.isDetailWillShow ? (
+            <AlertDialog contentComponent={<MovieDetailDialog movieId={this.state.willShowDetailId}
+                                                              onDismissClick={() => this.setState({
+                                                                  isDetailWillShow: false,
+                                                              })}/>}/>
+        ) : null;
+
         return (
             <View style={styles.container}>
+                {renderBorder()}
                 <SearchBar startSearch={this.startSearch.bind(this)}
                            cancel={this.back}/>
-                <View style={{width, height: minWidth, backgroundColor: Colors.borderGrey}}/>
+                {renderBorder()}
                 {history}
                 {searchResult}
+                {detailDialog}
             </View>
         )
 

@@ -20,7 +20,7 @@ export default class SearchButton extends Component {
             <TouchableOpacity style={styles.container} onPress={this.props.onClick} activeOpacity={0.8}>
                 <View style={styles.searchWrapper}>
                     <View style={{flexDirection: 'row', alignItems: 'center'} }>
-                        <Image style={styles.searchIcon} source={require('../img/search.png')}/>
+                        <Image style={styles.searchIcon} source={require('../../img/search.png')}/>
                         <Text style={styles.searchHint}>搜索</Text>
                     </View>
                 </View>

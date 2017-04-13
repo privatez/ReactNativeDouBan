@@ -15,8 +15,8 @@ import {
 import {SearchBar} from 'react-native-elements'
 import {Actions} from 'react-native-router-flux'
 
-import Banner from './Banner';
-import SearchButton from '../component/SearchButton'
+import Banner from '../component/banner/Banner';
+import SearchButton from '../component/search/SearchButton'
 
 const {width, height} = Dimensions.get('window');
 
